@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, FlatList } from "react-native";
+import { View, Text, StyleSheet, Dimensions, FlatList } from "react-native";
 import BodyText from "./BodyText";
 
 const GuessesList = (props) => {
@@ -30,7 +30,7 @@ const GuessesList = (props) => {
 
 const styles = StyleSheet.create({
   listContainer: {
-    width: "60%",
+    width: Dimensions.get("window").width > 350 ? "60%" : "80%",
     flex: 1,
   },
   list: {
