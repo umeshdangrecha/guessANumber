@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert, ScrollView } from "react-native";
 import Card from "../components/Card";
 import MainButton from "../components/MainButton";
 import NumberContainer from "../components/NumberContainer";
 import { Ionicons } from "@expo/vector-icons";
+import GuessesList from "../components/GuessesList";
 
 const generateRandomBW = (min, max, exclude) => {
   min = Math.ceil(min);
@@ -14,10 +15,9 @@ const generateRandomBW = (min, max, exclude) => {
   return random;
 };
 const GameScreen = (props) => {
-  const [currentGuess, setCurrentGuess] = useState(
-    generateRandomBW(1, 100, props.userChoice)
-  );
-  const [rounds, setRounds] = useState(0);
+  const initialGuess = generateRandomBW(1, 100, props.userChoice);
+  const [currentGuess, setCurrentGuess] = useState(initialGuess);
+  const [pastGuesses, setPastGuesses] = useState([initialGuess.toString()]);
 
   const currentLow = useRef(1);
   const currentHeigh = useRef(100);
@@ -26,7 +26,7 @@ const GameScreen = (props) => {
 
   useEffect(() => {
     if (currentGuess === userChoice) {
-      onGameOver(rounds);
+      onGameOver(pastGuesses.length);
     }
   }, [currentGuess, userChoice, onGameOver]);
 
@@ -44,7 +44,7 @@ const GameScreen = (props) => {
     if (direction === "lower") {
       currentHeigh.current = currentGuess;
     } else {
-      currentLow.current = currentGuess;
+      currentLow.current = currentGuess + 1;
     }
 
     const nextNum = generateRandomBW(
@@ -54,7 +54,8 @@ const GameScreen = (props) => {
     );
 
     setCurrentGuess(nextNum);
-    setRounds((curRound) => curRound + 1);
+    // setRounds((curRound) => curRound + 1);
+    setPastGuesses((prev) => [nextNum.toString(), ...prev]);
   };
 
   return (
@@ -69,6 +70,7 @@ const GameScreen = (props) => {
           <Ionicons name="md-add" size={24} color="white" />
         </MainButton>
       </Card>
+      <GuessesList list={pastGuesses} />
     </View>
   );
 };
