@@ -5,6 +5,7 @@ import MainButton from "../components/MainButton";
 import NumberContainer from "../components/NumberContainer";
 import { Ionicons } from "@expo/vector-icons";
 import GuessesList from "../components/GuessesList";
+import * as ScreenOrientation from "expo-screen-orientation";
 
 const generateRandomBW = (min, max, exclude) => {
   min = Math.ceil(min);
@@ -15,6 +16,7 @@ const generateRandomBW = (min, max, exclude) => {
   return random;
 };
 const GameScreen = (props) => {
+  // ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
   const initialGuess = generateRandomBW(1, 100, props.userChoice);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [pastGuesses, setPastGuesses] = useState([initialGuess.toString()]);
